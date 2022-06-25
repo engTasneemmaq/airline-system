@@ -6,7 +6,7 @@ require('./pilot');
 
 events.on('new-flight', newFlight);
 function newFlight(payload) {
-    console.log("->>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>");
+    console.log(">>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>");
         console.log(`Manager: new flight with ID :" ${payload.flightID}" have been scheduled`);
         console.log(payload); 
 
