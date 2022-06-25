@@ -11,39 +11,39 @@ console.log(" wait 10 seconds to see ... ")
 setInterval(() =>{
     if(count<10){
     if(count == 1) {
-    console.log(count);
+    console.log(count,"✈️");
     
 }
 if(count == 2) {
-    console.log(count);
+    console.log(count,"🛫");
     
 }
 if(count == 3) {
-    console.log(count);
+    console.log(count,"🛬");
     
 }
 if(count == 4) {
-    console.log(count);
+    console.log(count,"✈️");
    
 }
 if(count == 5) {
-    console.log(count);
+    console.log(count,"🛫");
     
 }
 if(count == 6) {
-    console.log(count);
+    console.log(count,"🛬");
     
 }
 if(count == 7) {
-    console.log(count);
+    console.log(count,"✈️");
     
 }
 if(count == 8) {
-    console.log(count);
+    console.log(count,"🛫");
     
 }
 if(count == 9) {
-    console.log(count);
+    console.log(count,"🛬");
     
 }
 
