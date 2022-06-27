@@ -1,14 +1,18 @@
 # airline-system ✈️✈️✈️
 
-## UML Diagram :
-![uml](./uml-diagram-airline-system.png)
+<br>
 
 ## [pull Request Link](https://github.com/engTasneemmaq/airline-system/pulls)
 <br>
 <br>
 
+## UML Diagram :
+![uml airline- socket](./assest/uml-airline-socket.png)
 
 
 
-![result](./airline.png)
-![result](./airline1.png)
+
+<br>
+
+![result socket](./assest/airline-socket.png)
+
