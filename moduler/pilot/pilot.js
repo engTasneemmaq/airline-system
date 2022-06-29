@@ -1,23 +1,34 @@
 'use strict';
 require('dotenv').config();
 const io = require('socket.io-client');
-let host = `http://localhost:${process.env.PORT}/airline`;
+let host = `http://localhost:${process.env.PORT}/`;
 
 
 const systemConnection = io.connect(host);
 
-systemConnection.on('took-off', handleTookOff);
+systemConnection.on('flight',(payload)=>{
+        console.log("                      ");
+ console.log(`  'Pilot:Sorry i didn't catch this flight ID 332u443673r32yuf463'.`);
 
-function handleTookOff(payload) {
-        console.log(` Pilot: flight with ID : " ${payload.flightID} "  took-off `);
-               
-};
-
-systemConnection.on('arrived', handleArrived);
-
-function handleArrived(payload) {
-        console.log(` Pilot: flight with ID : " ${payload.flightID} "  arrived `);
-        console.log("----------------------------------------------------------------");
-
-        systemConnection.emit("message",payload);        
-};
+});
+systemConnection.on("new-flight", (payload) =>{
+        console.log("                      ");
+            
+        console.log("the pilot got  notified by manager for the new-flight");
+        
+       systemConnection.emit("get-all")
+                })   
+        
+        
+        systemConnection.on('took-off',(payload)=>{
+                console.log("                      ");
+                       console.log(` Pilot: flight with ID : " ${payload.Details.flightID} "  took-off `);
+            
+                   });
+            
+                   systemConnection.on('arrived', (payload) => {
+                        console.log("                      ");
+                       console.log(` Pilot: flight with ID : " ${payload.Details.flightID} "  has arrived `);
+                       
+                       
+                       });  
