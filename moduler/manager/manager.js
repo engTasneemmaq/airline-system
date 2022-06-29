@@ -1,24 +1,48 @@
 'use strict';
 require('dotenv').config();
+const { faker } =require('@faker-js/faker');
 const io = require('socket.io-client');
 let host = `http://localhost:${process.env.PORT}/`;
 
 
+const uuid = require('uuid').v4;
 const systemConnection = io.connect(host);
 
-systemConnection.on('new-flight', newFlight);  
-
-function newFlight(payload) {  
-         console.log("->>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>");   
-      console.log(`Manager: new flight with ID :" ${payload.flightID}" have been scheduled`);   
+let flights= {
+    event: "new-flight",
+    time: faker.date.past(),
+    Details:{
+        airLine: 'Royal Jordanian Airlines',
+        flightID: faker.datatype.uuid(),
+        pilot: faker.name.firstName(),
+        destination: faker.address.city()
+    }
 }
 
-systemConnection.on('massage', managerMassage);
 
-function managerMassage(payload){
-    console.log(`Manager: we're greatly thankful for the amazing flight, ${payload.pilot}`);
-}
+systemConnection.emit("get-all" ,flights)
 
+setTimeout(() => {
+    systemConnection.emit('new-flight',flights );
+  
+},1000)
+    
+    console.log(`Manager: new flight with ID :" ${flights.Details.flightID}" have been scheduled`);
+   
+    systemConnection.on('arrived', (payload)=>{
+
+console.log("the manager notified by pilot for flight arrived");
+
+console.log(payload);
+    });
+    
+
+   
+
+    systemConnection.on('massage', (payload)=>{
+
+    console.log(`Manager: we're greatly thankful for the amazing flight, ${payload.Details.pilot}`);
+})
 
 
 
