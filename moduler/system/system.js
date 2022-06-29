@@ -3,63 +3,86 @@ require('dotenv').config();
 const { faker } =require('@faker-js/faker');
 const PORT = process.env.PORT || 3030;
 const ioServer = require('socket.io')(PORT);
+const uuid = require('uuid').v4;
 
+const queue = {
+    flight: {
 
-let flight = {
-    event: "newEvent",
-    time: faker.date.past(),
-    Details: "any" ,
-    airLine: 'Royal Jordanian Airlines',
-    destination: faker.address.city(),
-    flightID: faker.datatype.uuid(),
-    pilot: faker.name.firstName()
- };
+    }
+}
 
+  
  
- 
- 
- ioServer.on('connection', (socket) => {
-    console.log('connected ', socket.id);
-      
-    // setInterval(() => { 
-        setTimeout(() => {    
-            ioServer.emit('new-flight', flight);
-        console.log(flight);
-            setTimeout(() => {
-                console.log(flight);
-                ioServer.emit('took-off', flight);
-               
-               }, 4000)
+    ioServer.on('connection', (socket) => {
+        console.log('connected ', socket.id);
+         
+        socket.on("new-flight", (payload) =>{
+            const id = uuid();
+        queue.flight[id] = payload;
     
-        
-        setTimeout(() => { 
-            console.log(flight);
-            ioServer.emit('arrived', flight);
-        }, 7000) 
-        setTimeout(() => { 
-            
-            ioServer.emit("massage", flight); 
-        }, 8000)
-      
-        }, 10000)
-
-   });
-
-
-//  namespace
-const airLineSystem = ioServer.of('/airline');
-airLineSystem.on('connection', (socket) => {
-console.log('connected to AirLine', socket.id);
-setTimeout(() => {
-            
-    airLineSystem.emit('took-off', flight);
-   
-   }, 4000)
-
-   setTimeout(() => { 
-        
-    airLineSystem.emit('arrived', flight);
-}, 7000)
+    console.log(queue.flight);
     
-
-});
+    
+    
+    setTimeout(() => {
+        
+        ioServer.emit("new-flight", payload)
+    }, 1000);
+    
+    setTimeout(() => {
+        
+        ioServer.emit("took-off", payload)
+        
+    }, 4000);
+    setTimeout(() => {
+        
+        ioServer.emit("arrived", payload)
+        
+    }, 7000);
+    setTimeout(() => {
+        
+        ioServer.emit("massage" , payload)
+        
+    }, 8000);
+    
+    
+    setTimeout(() => {  
+        ioServer.emit("flight" , queue.flight)
+        
+    }, 10000);
+    })
+    socket.on("get-all" , (payload) => {
+       
+    console.log("all flights  from get-all event");
+    const id = uuid();
+    queue.flight[id] = payload;
+    console.log("----------------------------------------------");
+    console.log(queue.flight);
+    console.log("----------------------------------------------");
+        
+    })
+    
+    
+    
+    
+           })   
+            
+        
+        //namespace
+        
+        const airLineSystem = ioServer.of('/airline');
+        airLineSystem.on('connection', (socket) => {
+        console.log('connected to AirLine', socket.id);
+        setTimeout(() => {
+                    
+            airLineSystem.emit('took-off', queue.flight);
+           
+           }, 4000)
+    
+           setTimeout(() => { 
+                
+            airLineSystem.emit('arrived', queue.flight);
+        }, 7000)
+            
+        
+    });
